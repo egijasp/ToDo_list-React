@@ -18,6 +18,10 @@ const ToDo = () => {
   const [edit, setEdit] = useState(false);
   const [editedTask, setEditedTask] = useState('');
 
+  useEffect(() => {
+    localStorage.setItem('lists', JSON.stringify(taskList));
+  }, [taskList]);
+
   const addTask = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputValue) {
