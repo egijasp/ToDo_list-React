@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.scss';
 import ToDo from './pages/ToDo';
+import './App.scss';
 
 const App = () => (
   <div className="App">
