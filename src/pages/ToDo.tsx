@@ -1,5 +1,5 @@
 import {
-  ChangeEvent, FormEvent, useEffect, useRef, useState,
+  ChangeEvent, FormEvent, useEffect, useState,
 } from 'react';
 import '../styles/Todo.scss';
 import { FaRegEdit, FaPlus, FaTimes } from 'react-icons/fa';
@@ -7,16 +7,23 @@ import Form from '../components/Form';
 
 type Task = {
   id: number,
-    task: string,
-    completed: boolean,
+  task: string,
+  completed: boolean,
+  editing: boolean
 }
+
+const taskListLocalStorage = () => {
+  const savedTodos = localStorage.getItem('lists');
+  if (savedTodos) {
+    return JSON.parse(savedTodos) || [];
+  }
+  return [];
+};
 
 const ToDo = () => {
   const [inputValue, setInputValue] = useState('');
-  const [taskList, setTaskList] = useState<Task[]>([]);
   const [completedTask, setCompletedTask] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [editedTask, setEditedTask] = useState('');
+  const [taskList, setTaskList] = useState<Task[]>(taskListLocalStorage());
 
   useEffect(() => {
     localStorage.setItem('lists', JSON.stringify(taskList));
@@ -27,14 +34,23 @@ const ToDo = () => {
     if (!inputValue) {
       return;
     }
-    const newTaskList = { id: Math.random(), task: inputValue, completed: false };
-    setTaskList([...taskList, newTaskList]);
+    const newTask = {
+      id: taskList.length + 1,
+      task: inputValue,
+      completed: false,
+      editing: false,
+    };
+    setTaskList([...taskList, newTask]);
     setInputValue('');
   };
 
   const removeTask = (index: number) => {
     const filteredList = taskList.filter((_, i) => i !== index);
     setTaskList(filteredList);
+  };
+
+  const removeAllTasks = () => {
+    setTaskList([]);
   };
 
   const checkedTask = (index: number) => {
@@ -50,14 +66,10 @@ const ToDo = () => {
     return true;
   });
 
-  const editedTaskList = (index: number) => {
-    const updatedTaskList = [...taskList].map((task, i) => {
-      if (index === i) {
-        return { ...task, task: editedTask };
-      }
-      return task;
-    });
-    setTaskList(updatedTaskList);
+  const editTask = (index: number, editing: boolean) => {
+    const clonedTaskList = [...taskList];
+    clonedTaskList[index].editing = editing;
+    setTaskList(clonedTaskList);
   };
 
   return (
@@ -72,9 +84,7 @@ const ToDo = () => {
         <button
           className="btn btn-todo btn-color"
           type="button"
-          onClick={() => {
-            setTaskList([]);
-          }}
+          onClick={removeAllTasks}
         >
           DELETE ALL
         </button>
@@ -87,7 +97,9 @@ const ToDo = () => {
         </button>
       </div>
       <div className="todo__list">
-        {completedTasks.map(({ task, completed, id }, index) => (
+        {completedTasks.map(({
+          task, completed, editing, id,
+        }, index) => (
           <div key={id} className="todo__task-wrapper">
             <input
               type="checkbox"
@@ -96,15 +108,16 @@ const ToDo = () => {
                 checkedTask(index);
               }}
             />
-            {edit ? (
+            {editing ? (
               <div className="todo__task edit">
                 <input
                   className="input__edit"
                   type="text"
                   value={task}
                   onChange={(e) => {
-                    setEditedTask(e.target.value);
-                    editedTaskList(index);
+                    const clonedTodoList = [...taskList];
+                    clonedTodoList[index].task = e.target.value;
+                    setTaskList(clonedTodoList);
                   }}
                 />
                 <select className="input__edit">
@@ -114,7 +127,6 @@ const ToDo = () => {
                 </select>
                 <button
                   onClick={() => {
-                    setEdit(!edit);
                   }}
                   type="button"
                   className="btn btn-color edit"
@@ -124,7 +136,7 @@ const ToDo = () => {
                 <button
                   className="btn btn-color edit"
                   onClick={() => {
-                    editedTaskList(index);
+                    editTask(index, false);
                   }}
                 >
                   SAVE
@@ -138,7 +150,7 @@ const ToDo = () => {
             <button
               className="btn"
               onClick={() => {
-                setEdit(!edit);
+                editTask(index, true);
               }}
             >
               <FaRegEdit />
