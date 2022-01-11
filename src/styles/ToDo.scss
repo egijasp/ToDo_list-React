@@ -1,0 +1,65 @@
+.todos-container {
+  display: grid;
+  grid-template-columns: 600px;
+  justify-content: center;
+  grid-gap: 10px;
+}
+
+.todos {
+  width: 100%;
+  padding: 35px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  display: grid;
+  grid-gap: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+}
+
+.todo__error {
+  color: red;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bolder;
+  text-align: left;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 8px;
+}
+
+.progressBar-wrapper {
+  display: grid;
+  gap: 5px;
+  text-align: left;
+}
+
+.todo__list {
+  display: grid;
+  gap: 10px;
+}
+
+.todo__task-wrapper {
+  display: grid;
+  grid-template-columns: 20px 1fr 25px 25px;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+}
+
+.tag {
+  font-weight: bolder;
+  font-size: 15px;
+}
+
+.small {
+  font-size: 13px;
+  font-weight: normal;
+
+  &:focus {
+    background-color: blue;
+  }
+}

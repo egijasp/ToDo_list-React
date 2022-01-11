@@ -1,0 +1,17 @@
+.form__edit {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.input__edit {
+  font-family: inherit;
+  font-size: 18px;
+  border: 2px solid deeppink;
+  border-radius: 5px 0 0 5px;
+}
+
+.edit {
+  border-radius: 0 5px 5px 0;
+  color: white;
+}

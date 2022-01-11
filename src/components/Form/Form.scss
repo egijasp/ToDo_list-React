@@ -1,0 +1,29 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.form__input {
+  width: 80%;
+  padding: 5px 10px;
+  font-size: 18px;
+  border: 2px solid deeppink;
+  border-radius: 5px 0 0 5px;
+  font-family: inherit;
+}
+
+.select {
+  border-bottom: 2px solid deeppink;
+  border-top: 2px solid deeppink;
+}
+
+.btn-add {
+  border-radius: 0 5px 5px 0;
+  color: white;
+}
+
+.center {
+  display: grid;
+  align-content: center;
+}
